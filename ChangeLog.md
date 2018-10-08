@@ -2,7 +2,7 @@
 
 Follow the principles in [keepachangelog.com](https://keepachangelog.com)!
 
-# v.Next (Current)
+# [v0.2.0-beta.8] (Current)
 
 ### Added
 * Integrate error messages for all semui and ant design components
@@ -11,6 +11,7 @@ Follow the principles in [keepachangelog.com](https://keepachangelog.com)!
 * Added some basic tests for ant design components
 * `make watch-all-verbose` and `make watch-verbose` and added: does not suppress the `tsc --watch` output.
 * `make build-pakages` added as new target: only builds the `packages` directory
+* `MeteorTableImpl` has now a new method `invalidateData` (https://github.com/moxb/moxb/pull/31)
 
 ### Changed
 * Updated npm version to version 6 so we can use `npm ci`
