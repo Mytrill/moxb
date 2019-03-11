@@ -24,6 +24,7 @@ export class MoreMenusAnt extends React.Component<{ url?: UrlStore } & Navigable
                             subStates={subMenu1}
                             mode="horizontal"
                             useTokenMappings={true}
+                            mountAll={true}
                             fallback="Unknown number"
                             debug={false}
                         />

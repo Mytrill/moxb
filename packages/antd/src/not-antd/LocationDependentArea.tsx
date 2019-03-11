@@ -35,7 +35,7 @@ export interface LocationDependentAreaProps<DataType>
     /**
      * Should we mount (but hide) the content of all possible selections of the state space?
      *
-     * This will pass an invisible = true parameter to all children. The children react to that.
+     * This will render an extra div around all children, and add display: none style to those that are no active.
      *
      * Defaults to false.
      */
@@ -81,16 +81,10 @@ export class LocationDependentArea<DataType> extends React.Component<LocationDep
         }
     }
 
-    protected renderSubState(
-        subState: SubStateInContext<UIFragment, UIFragmentSpec, DataType> | null,
-        invisible?: boolean
-    ) {
+    protected renderSubState(subState: SubStateInContext<UIFragment, UIFragmentSpec, DataType> | null) {
         const extraProps: any = {
             key: subState ? subState.key : 'missing',
         };
-        if (invisible) {
-            extraProps.invisible = true;
-        }
         return renderSubStateCore({
             state: subState,
             navigationContext: this.props,
@@ -105,12 +99,34 @@ export class LocationDependentArea<DataType> extends React.Component<LocationDep
 
     public render() {
         const { mountAll } = this.props;
-        const wantedChild = this._states.getActiveSubState();
-        this.debugLog('wantedChild is', wantedChild);
+        const normalStyle = {
+            // display: 'magic',
+        };
+        const hiddenStyle = {
+            display: 'none',
+        };
         if (mountAll) {
             this.debugLog('Rendering all children at once');
-            return <div>{this._states._subStatesInContext.map(s => this.renderSubState(s, s !== wantedChild))}</div>;
+            return (
+                <div>
+                    {this._states
+                        .getFilteredSubStates({
+                            onlyLeaves: true,
+                            onlyVisible: false,
+                            noDisplayOnly: true,
+                            onlySatisfying: true,
+                            recursive: true,
+                        })
+                        .map(s => (
+                            <div key={s.menuKey} style={this._states.isSubStateActive(s) ? normalStyle : hiddenStyle}>
+                                {this.renderSubState(s)}
+                            </div>
+                        ))}
+                </div>
+            );
         } else {
+            const wantedChild = this._states.getActiveSubState();
+            this.debugLog('wantedChild is', wantedChild);
             return this.renderSubState(wantedChild);
         }
     }
