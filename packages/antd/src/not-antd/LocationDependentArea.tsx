@@ -10,6 +10,10 @@ import { renderSubStateCore } from './rendering';
 import { UIFragment } from './UIFragment';
 import { UIFragmentSpec } from './UIFragmentSpec';
 
+export const hiddenStyle = {
+    display: 'none',
+};
+
 export interface LocationDependentAreaProps<DataType>
     extends LocationDependentStateSpaceHandlerProps<UIFragment, UIFragmentSpec, DataType> {
     /**
@@ -35,7 +39,7 @@ export interface LocationDependentAreaProps<DataType>
     /**
      * Should we mount (but hide) the content of all possible selections of the state space?
      *
-     * This will render an extra div around all children, and add display: none style to those that are no active.
+     * This will render an extra div around all children, and add `display: none` style to those that are inactive.
      *
      * Defaults to false.
      */
@@ -99,12 +103,6 @@ export class LocationDependentArea<DataType> extends React.Component<LocationDep
 
     public render() {
         const { mountAll } = this.props;
-        const normalStyle = {
-            // display: 'magic',
-        };
-        const hiddenStyle = {
-            display: 'none',
-        };
         if (mountAll) {
             this.debugLog('Rendering all children at once');
             return (
@@ -118,7 +116,7 @@ export class LocationDependentArea<DataType> extends React.Component<LocationDep
                             recursive: true,
                         })
                         .map(s => (
-                            <div key={s.menuKey} style={this._states.isSubStateActive(s) ? normalStyle : hiddenStyle}>
+                            <div key={s.menuKey} style={this._states.isSubStateActive(s) ? {} : hiddenStyle}>
                                 {this.renderSubState(s)}
                             </div>
                         ))}

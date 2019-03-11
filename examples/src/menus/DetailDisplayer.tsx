@@ -11,6 +11,7 @@ export class DetailDisplayer extends React.Component<NavigableContent<any, UIFra
         this.props.navControl.registerStateHooks({
             getLeaveQuestion: () => 'Do you really want to leave behind the details?',
         });
+        console.log('Mountint detail displayer');
     }
 
     public render() {

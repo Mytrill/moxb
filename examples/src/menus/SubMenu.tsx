@@ -53,6 +53,7 @@ export const subMenu1: StateSpace<string, UIFragmentSpec, {}> = [
             ifDetails: {
                 fragment: DetailDisplayer,
             },
+            mountAll: true,
         }),
     },
     {
